@@ -1,0 +1,42 @@
+import * as readline from 'readline'
+import { stdin as input, stdout as output } from 'process'
+const rl = readline.createInterface({ input, output })
+const question = q => new Promise((rs, rj) => rl.question(q + ' ', a => rs(a)))
+
+const color = {
+    reset: "\x1b[0m",
+
+    fg: {
+        red: "\x1b[31m",
+        green: "\x1b[32m",
+        blue: "\x1b[34m",
+    },
+    
+}
+
+let soma = 0
+let count = 0
+let media
+
+while (true) {
+    let strNota = await question(`Digite o valor da ${count + 1}° nota ou N/n para cacular a média entre os valores inseridos:`)
+    if (strNota.toUpperCase() == 'N') break
+    let nota = parseFloat(strNota)
+
+    if (isNaN(nota) || nota < 0 ) {
+        console.log(`${color.fg.red}[ ERRO ] Por favor digite um número maior que 0 ou a letra N/n.${color.reset}`)
+        continue
+    }
+
+    soma = soma + nota
+    count++
+}
+
+if (count <= 0) {
+    console.log(`${color.fg.red}[ ERRO ] Nenhum valor foi digitado, digite um número para calcular a média.${color.reset}`)
+    process.exit()
+}
+
+media = soma / count
+console.log(`${color.fg.green}[ RESULTADO ] O valor da média é ${color.fg.blue}${media}${color.reset}`)
+process.exit()
